@@ -1,0 +1,30 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.score-board {
+  display: flex;
+  gap: 5px;
+}
+
+.score {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #bbada0;
+  border-radius: 3px;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  padding: 10px 25px 2px 25px;
+}
+
+.score-title {
+  color: #eee4da;
+  font-size: 13px;
+  line-height: 13px;
+  text-transform: uppercase;
+}

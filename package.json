@@ -1,0 +1,31 @@
+{
+  "name": "@tehcoalman/solid2048",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=16.13.0"
+  },
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "start": "vite dev",
+    "typecheck": "tsc -p ./src/tsconfig.json"
+  },
+  "dependencies": {
+    "solid-js": "~1.2.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@babel/preset-typescript": "^7.16.5",
+    "@types/jest": "^27.0.3",
+    "babel-jest": "^27.4.5",
+    "babel-preset-solid": "~1.2.6",
+    "cross-env": "^7.0.3",
+    "jest": "^27.4.5",
+    "prettier": "=2.5.1",
+    "typescript": "~4.5.4",
+    "vite": "~2.7.2",
+    "vite-plugin-solid": "~2.1.4"
+  }
+}
