@@ -1,14 +1,6 @@
-import {
-  onMount,
-  onCleanup,
-  createSignal,
-  createEffect,
-  Show,
-  For,
-} from "solid-js";
-import { createStore } from "solid-js/store";
-import { isGameOver, isSameGrid, slide, SlideDir, spawnTile } from "./Grid";
-import type { Grid, TileState } from "./Grid";
+import { onMount, onCleanup, createSignal, createEffect, Show } from "solid-js";
+import { isGameOver, isSameGrid, slide, spawnTile } from "./Grid";
+import type { Grid, TileState, SlideDir } from "./Grid";
 
 function BoardContainer(props: { cellRefs: HTMLElement[]; children?: any }) {
   const pos1D = [0, 1, 2, 3];
@@ -43,7 +35,7 @@ function initialState(): {
 }
 
 export default function Board(props: { onScore: (value: number) => void }) {
-  const [store, setStore] = createStore(initialState());
+  const [store, setStore] = createSignal(initialState());
   const cellRefs: HTMLElement[] = [];
 
   onMount(() => {
@@ -100,7 +92,7 @@ export default function Board(props: { onScore: (value: number) => void }) {
 
   return (
     <BoardContainer cellRefs={cellRefs}>
-      {store.states.map((state) => (
+      {store().states.map((state) => (
         <Tile cellRefs={cellRefs} state={state} />
       ))}
     </BoardContainer>
