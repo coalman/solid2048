@@ -22,3 +22,12 @@ jobs:
       - run: npm run typecheck
       - run: npm run test
       - run: npm run build
+
+      - name: Deploy to gh-pages
+        if: ${{ success() && github.ref == 'refs/heads/main' }}
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
