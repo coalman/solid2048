@@ -6,7 +6,7 @@ export type TileState =
   | { change: "merge"; rank: number; index: number }
   | { change: "move"; rank: number; startIndex: number; destIndex: number };
 
-export type GridTile = undefined | number;
+export type GridTile = null | number;
 
 export type Grid = readonly GridTile[];
 
@@ -22,12 +22,12 @@ export function slideLeft(
 
   for (let i of lineIndexes) {
     const tile = grid[i];
-    if (tile === undefined) {
+    if (tile === null) {
       if (lastEmptyIndex === undefined) {
         lastEmptyIndex = i;
       }
     } else if (lastTileEntry && lastTileEntry[1] === tile) {
-      grid[i] = undefined;
+      grid[i] = null;
       if (lastEmptyIndex === undefined) {
         lastEmptyIndex = i;
       }
@@ -41,7 +41,7 @@ export function slideLeft(
       states.push({ change: "merge", rank: tile + 1, index: lastTileEntry[0] });
       lastTileEntry = undefined;
     } else if (lastEmptyIndex !== undefined) {
-      grid[i] = undefined;
+      grid[i] = null;
       grid[lastEmptyIndex] = tile;
       lastTileEntry = [lastEmptyIndex, tile];
       states.push({

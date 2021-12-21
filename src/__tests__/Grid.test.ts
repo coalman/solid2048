@@ -13,11 +13,11 @@ function createGrid(ranks: RankGrid): GridTile[] {
 }
 
 function createRow(ranks: readonly number[]): GridTile[] {
-  return ranks.map((rank) => (rank === 0 ? undefined : rank));
+  return ranks.map((rank) => (rank === 0 ? null : rank));
 }
 
 function createGridFromStates(states: readonly TileState[], gridLength = 16) {
-  const row: GridTile[] = Array(gridLength).fill(undefined);
+  const row: GridTile[] = Array(gridLength).fill(null);
 
   for (const state of states) {
     if (state.change === "move") {
