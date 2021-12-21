@@ -31,18 +31,39 @@ function initialState(): {
   readonly grid: Grid;
   readonly states: readonly TileState[];
 } {
-  return { grid: Array(16).fill(undefined), states: [] };
+  return { grid: Array(16).fill(null), states: [] };
 }
 
 export default function Board(props: { onScore: (value: number) => void }) {
-  const [store, setStore] = createSignal(initialState());
+  let initState = initialState();
+  {
+    const storedState = localStorage.getItem("gameState");
+    if (storedState !== null) {
+      initState = JSON.parse(storedState);
+    } else {
+      onMount(() => {
+        setStore((state) => {
+          const grid = [...state.grid];
+          return { ...state, grid, states: [spawnTile(grid), spawnTile(grid)] };
+        });
+      });
+    }
+  }
+
+  const [store, setStore] = createSignal(initState);
   const cellRefs: HTMLElement[] = [];
 
-  onMount(() => {
-    setStore((state) => {
-      const grid = [...state.grid];
-      return { ...state, grid, states: [spawnTile(grid), spawnTile(grid)] };
-    });
+  createEffect(() => {
+    const currentState = store();
+    const savedState: ReturnType<typeof initialState> = {
+      ...currentState,
+      states: currentState.states.map((value) => ({
+        change: "none",
+        rank: value.rank,
+        index: value.change === "move" ? value.destIndex : value.index,
+      })),
+    };
+    localStorage.setItem("gameState", JSON.stringify(savedState));
   });
 
   {
@@ -77,7 +98,7 @@ export default function Board(props: { onScore: (value: number) => void }) {
       }
       if (event.key === "r") {
         setStore((state) => {
-          const grid = Array(16);
+          const grid = Array(16).fill(null);
           return { ...state, grid, states: [spawnTile(grid), spawnTile(grid)] };
         });
       }
