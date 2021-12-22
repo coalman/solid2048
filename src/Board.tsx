@@ -174,7 +174,7 @@ function Tile(props: { cellRefs: readonly HTMLElement[]; state: TileState }) {
       <div className="tile-pos" style={{ transform: transform() }}>
         <div
           className={["tile", `tile-${props.state.change}`].join(" ")}
-          data-rank={props.state.rank}
+          data-rank={Math.min(props.state.rank, 12)}
         >
           {getValue(props.state.rank)}
         </div>

@@ -142,6 +142,12 @@ main {
   font-size: 35px;
 }
 
+/* NOTE: this is for any tiles over 2048 (rank=11) */
+.tile[data-rank="12"] {
+  background: #3c3a32;
+  font-size: 30px;
+}
+
 @keyframes appear {
   0% {
     opacity: 0;
