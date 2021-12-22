@@ -12,7 +12,7 @@ export default function ScoreBoard(props: {
       </div>
       <div className="score">
         <span className="score-title">best</span>
-        <span>-</span>
+        <span>{props.bestScore}</span>
       </div>
     </div>
   );

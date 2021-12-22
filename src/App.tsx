@@ -14,11 +14,34 @@ export default function App() {
     }
   }
 
+  let initialBestScore = 0;
+  {
+    const savedBestScore = localStorage.getItem("bestGameScore");
+    if (savedBestScore !== null) {
+      initialBestScore = parseInt(savedBestScore, 10);
+    }
+    if (isNaN(initialBestScore)) {
+      initialBestScore = initialScore;
+    }
+  }
+
   const [score, setScore] = createSignal(initialScore);
+  const [bestScore, setBestScore] = createSignal(initialBestScore);
 
   createEffect(() => {
     const currentScore = String(score());
     localStorage.setItem("gameScore", currentScore);
+  });
+
+  createEffect(() => {
+    if (score() > bestScore()) {
+      setBestScore(score());
+    }
+  });
+
+  createEffect(() => {
+    const currentBestScore = String(bestScore());
+    localStorage.setItem("bestGameScore", currentBestScore);
   });
 
   return (
@@ -30,7 +53,7 @@ export default function App() {
             w/solid-js
           </a>
         </h1>
-        <ScoreBoard score={score()} bestScore={0} />
+        <ScoreBoard score={score()} bestScore={bestScore()} />
       </header>
       <main>
         <Board
