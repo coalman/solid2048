@@ -34,7 +34,10 @@ function initialState(): {
   return { grid: Array(16).fill(null), states: [] };
 }
 
-export default function Board(props: { onScore: (value: number) => void }) {
+export default function Board(props: {
+  onScore: (value: number) => void;
+  onReset: () => void;
+}) {
   let initState = initialState();
   {
     const storedState = localStorage.getItem("gameState");
@@ -101,6 +104,7 @@ export default function Board(props: { onScore: (value: number) => void }) {
           const grid = Array(16).fill(null);
           return { ...state, grid, states: [spawnTile(grid), spawnTile(grid)] };
         });
+        props.onReset();
       }
     }
     onMount(() => {
@@ -126,6 +130,7 @@ export default function Board(props: { onScore: (value: number) => void }) {
                 states: [spawnTile(grid), spawnTile(grid)],
               };
             });
+            props.onReset();
           }}
         >
           New Game

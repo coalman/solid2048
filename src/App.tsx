@@ -1,9 +1,26 @@
 import ScoreBoard from "./ScoreBoard";
 import Board from "./Board";
-import { createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 
 export default function App() {
-  const [score, setScore] = createSignal(0);
+  let initialScore = 0;
+  {
+    const savedScore = localStorage.getItem("gameScore");
+    if (savedScore !== null) {
+      initialScore = parseInt(savedScore, 10);
+    }
+    if (isNaN(initialScore)) {
+      initialScore = 0;
+    }
+  }
+
+  const [score, setScore] = createSignal(initialScore);
+
+  createEffect(() => {
+    const currentScore = String(score());
+    localStorage.setItem("gameScore", currentScore);
+  });
+
   return (
     <div id="app">
       <header>
@@ -16,7 +33,10 @@ export default function App() {
         <ScoreBoard score={score()} bestScore={0} />
       </header>
       <main>
-        <Board onScore={(value) => setScore((score) => score + value)} />
+        <Board
+          onScore={(value) => setScore((score) => score + value)}
+          onReset={() => setScore(0)}
+        />
       </main>
       <p class="game-explanation">
         <strong class="important">How to play: </strong>
