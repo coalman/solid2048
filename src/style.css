@@ -25,8 +25,25 @@ h1 {
 
 main {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  margin-top: 40px;
+}
+
+.reset-btn-container {
+  display: flex;
+  justify-content: end;
+}
+
+.reset-btn {
+  background: #8f7a66;
+  color: #f9f6f2;
+  border: 0;
+  border-radius: 3px;
+  line-height: 42px;
+  padding: 0 20px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .board {
@@ -34,6 +51,7 @@ main {
 }
 
 .board {
+  margin-top: 40px;
   position: relative;
   display: inline-grid;
   grid-template-rows: repeat(4, var(--cell-size));

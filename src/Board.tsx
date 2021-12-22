@@ -112,11 +112,31 @@ export default function Board(props: { onScore: (value: number) => void }) {
   }
 
   return (
-    <BoardContainer cellRefs={cellRefs}>
-      {store().states.map((state) => (
-        <Tile cellRefs={cellRefs} state={state} />
-      ))}
-    </BoardContainer>
+    <>
+      <div className="reset-btn-container">
+        <button
+          type="button"
+          className="reset-btn"
+          onClick={() => {
+            setStore((state) => {
+              const grid = Array(16).fill(null);
+              return {
+                ...state,
+                grid,
+                states: [spawnTile(grid), spawnTile(grid)],
+              };
+            });
+          }}
+        >
+          New Game
+        </button>
+      </div>
+      <BoardContainer cellRefs={cellRefs}>
+        {store().states.map((state) => (
+          <Tile cellRefs={cellRefs} state={state} />
+        ))}
+      </BoardContainer>
+    </>
   );
 }
 
