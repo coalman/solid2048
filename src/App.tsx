@@ -18,6 +18,13 @@ export default function App() {
       <main>
         <Board onScore={(value) => setScore((score) => score + value)} />
       </main>
+      <p class="game-explanation">
+        <strong class="important">How to play: </strong>
+        Use your <strong>arrow keys </strong>
+        to move the tiles. Tiles with the same number
+        <strong> merge into one</strong> when they touch. Add them up to reach
+        <strong> 2048!</strong>
+      </p>
     </div>
   );
 }

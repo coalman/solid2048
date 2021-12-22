@@ -3,6 +3,7 @@ body {
   color: #776e65;
   background-color: rgb(250, 248, 239);
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+  font-size: 18px;
 }
 
 #app {
@@ -172,4 +173,10 @@ main {
 .tile-merge {
   animation: pop 200ms ease 100ms;
   animation-fill-mode: backwards;
+}
+
+.game-explanation {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  line-height: 1.65;
 }
