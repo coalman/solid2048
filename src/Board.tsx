@@ -93,7 +93,7 @@ export default function Board(props: {
       if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
         return;
       }
-      {
+      if (pauseGame() === false || (pauseGame() === "win" && keepGoing())) {
         const move = getSlideDir(event.key);
         if (move) {
           event.preventDefault();
