@@ -123,6 +123,29 @@ export function spawnTile(grid: GridTile[]): TileState {
   return { change: "new", rank, index: spawnIndex };
 }
 
+function getAdjacentGridIndexes(index: number): number[] {
+  const x = index % sideLen;
+  const y = Math.floor(index / sideLen);
+
+  const adjIndexes: number[] = [];
+
+  for (let [dX, dY] of [
+    [-1, 0],
+    [1, 0],
+    [0, -1],
+    [0, 1],
+  ] as const) {
+    const adjX = x + dX;
+    const adjY = y + dY;
+
+    if (adjX >= 0 && adjX < sideLen && adjY >= 0 && adjY < sideLen) {
+      adjIndexes.push(adjX + sideLen * adjY);
+    }
+  }
+
+  return adjIndexes;
+}
+
 export function isGameOver(grid: Grid): "win" | "lose" | false {
   if (grid.some((tile) => tile === 11)) {
     return "win";
@@ -132,11 +155,11 @@ export function isGameOver(grid: Grid): "win" | "lose" | false {
     for (let x = 0; x < sideLen; x++) {
       const tileIndex = x + y * sideLen;
       const tile = grid[tileIndex];
-      if (!tile) {
+      if (tile === null) {
         return false;
       }
-      const adjTiles = [1, -1, sideLen, -1 * sideLen].map(
-        (dIndex) => grid[dIndex + tileIndex]
+      const adjTiles = getAdjacentGridIndexes(tileIndex).map(
+        (adjIndex) => grid[adjIndex]
       );
       if (adjTiles.some((adjTile) => adjTile === tile)) {
         return false;
