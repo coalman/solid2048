@@ -152,7 +152,7 @@ export default function Board(props: {
             </div>
           </PauseScreen>
         </Show>
-        <Show when={!keepGoing() && pauseGame() === "lose"}>
+        <Show when={pauseGame() === "lose"}>
           <PauseScreen>
             <p>Game over!</p>
             <button type="button" className="reset-btn" onClick={resetGame}>
