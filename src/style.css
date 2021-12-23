@@ -20,10 +20,6 @@ h1 {
   margin: 0;
 }
 
-.subtitle {
-  font-size: 18px;
-}
-
 main {
   display: flex;
   flex-direction: column;

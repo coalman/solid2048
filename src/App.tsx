@@ -47,12 +47,7 @@ export default function App() {
   return (
     <div id="app">
       <header>
-        <h1>
-          2048
-          <a className="subtitle" href="https://www.solidjs.com/">
-            w/solid-js
-          </a>
-        </h1>
+        <h1>2048</h1>
         <ScoreBoard score={score()} bestScore={bestScore()} />
       </header>
       <main>
