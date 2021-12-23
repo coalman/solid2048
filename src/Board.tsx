@@ -1,4 +1,11 @@
-import { onMount, onCleanup, createSignal, createEffect, Show } from "solid-js";
+import {
+  onMount,
+  onCleanup,
+  createSignal,
+  createEffect,
+  Show,
+  createMemo,
+} from "solid-js";
 import { isGameOver, isSameGrid, slide, spawnTile } from "./Grid";
 import type { Grid, TileState, SlideDir } from "./Grid";
 
@@ -53,7 +60,19 @@ export default function Board(props: {
     }
   }
 
+  function resetGame() {
+    setStore((state) => {
+      const grid = Array(16).fill(null);
+      return { ...state, grid, states: [spawnTile(grid), spawnTile(grid)] };
+    });
+    props.onReset();
+    setKeepGoing(false);
+  }
+
   const [store, setStore] = createSignal(initState);
+  const pauseGame = createMemo(() => isGameOver(store().grid));
+  const [keepGoing, setKeepGoing] = createSignal(false);
+
   const cellRefs: HTMLElement[] = [];
 
   createEffect(() => {
@@ -88,23 +107,13 @@ export default function Board(props: {
               .map((state) => getValue(state.rank))
               .reduce((value, sum) => sum + value, 0);
             props.onScore(scoreChange);
-            const result = isGameOver(grid);
-            if (result === "win") {
-              console.log("win");
-            } else if (result === "lose") {
-              console.log("lose");
-            }
             return { ...state, grid, states };
           });
           return;
         }
       }
       if (event.key === "r") {
-        setStore((state) => {
-          const grid = Array(16).fill(null);
-          return { ...state, grid, states: [spawnTile(grid), spawnTile(grid)] };
-        });
-        props.onReset();
+        resetGame();
       }
     }
     onMount(() => {
@@ -118,21 +127,7 @@ export default function Board(props: {
   return (
     <>
       <div className="reset-btn-container">
-        <button
-          type="button"
-          className="reset-btn"
-          onClick={() => {
-            setStore((state) => {
-              const grid = Array(16).fill(null);
-              return {
-                ...state,
-                grid,
-                states: [spawnTile(grid), spawnTile(grid)],
-              };
-            });
-            props.onReset();
-          }}
-        >
+        <button type="button" className="reset-btn" onClick={resetGame}>
           New Game
         </button>
       </div>
@@ -140,9 +135,38 @@ export default function Board(props: {
         {store().states.map((state) => (
           <Tile cellRefs={cellRefs} state={state} />
         ))}
+        <Show when={!keepGoing() && pauseGame() === "win"}>
+          <PauseScreen>
+            <p>You win!</p>
+            <div style={{ display: "flex", gap: "40px" }}>
+              <button
+                type="button"
+                className="reset-btn"
+                onClick={() => setKeepGoing(() => true)}
+              >
+                Keep going
+              </button>
+              <button type="button" className="reset-btn" onClick={resetGame}>
+                Try again
+              </button>
+            </div>
+          </PauseScreen>
+        </Show>
+        <Show when={!keepGoing() && pauseGame() === "lose"}>
+          <PauseScreen>
+            <p>Game over!</p>
+            <button type="button" className="reset-btn" onClick={resetGame}>
+              Try again
+            </button>
+          </PauseScreen>
+        </Show>
       </BoardContainer>
     </>
   );
+}
+
+function PauseScreen(props: { children?: any }) {
+  return <div className="pause-screen">{props.children}</div>;
 }
 
 function Tile(props: { cellRefs: readonly HTMLElement[]; state: TileState }) {
